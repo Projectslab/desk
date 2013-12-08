@@ -11,7 +11,8 @@
                  [com.taoensso/tower "2.0.1"]
                  [markdown-clj "0.9.35"]
                  [environ "0.4.0"]
-                 [com.datomic/datomic-pro "0.9.4324"]]
+                 [com.datomic/datomic-pro "0.9.4324"]
+                 [couchbase/couchbase-client "1.0.3"]]
   :aot :all
   :repl-options {:init-ns desk.repl}
   :plugins [[lein-ring "0.8.7"]
