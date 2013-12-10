@@ -3,7 +3,14 @@
 
 (def uri "datomic:couchbase://localhost/desk/deskdb?password=1234")
 
+
 (d/create-database uri)
 (def conn (d/connect uri))
-(def db (d/db conn))
-db
+
+(defn load-user-schema []
+  (let [user-schema (load-file "resources/datomic/user.edn")]
+  (d/transact conn user-schema )))
+
+;(load-user-schema)
+
+;(load-file "resources/datomic/user.edn")

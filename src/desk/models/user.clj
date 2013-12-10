@@ -1,25 +1,25 @@
-(ns desk.models.user )
+(ns desk.models.user
+  (:require [datomic.api :as d :refer [q db entity]]
+            [desk.config.db :as config])
+  )
 
-(def user-schema
-  [{:db/doc "User email address"
-    :db/ident :user/email
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/unique :db.unique/identity
-    :db/id #db/id[:db.part/db]
-    :db.install/_attribute :db.part/db}
+;; User entity
+;; name
+;; email
+;; password
+(def dbb (db config/conn))
 
-   {:db/doc "User name"
-    :db/ident :user/name
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/index true
-    :db/id #db/id[:db.part/db]
-    :db.install/_attribute :db.part/db}
+(def user-data [{ :db/id (d/tempid :db.part/user)
+                  :user/email "goracioo@ya.ru"
+                  :user/name "Roman"
+                  :user/password "123456"
+                 }])
+(defn add-user []
+  (d/transact config/conn user-data))
 
-   {:db/doc "User password"
-    :db/ident :user/password
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/id #db/id[:db.part/db]
-    :db.install/_attribute :db.part/db}])
+;; Model functions
+(defn find-user []
+  (q '[:find ?e
+       :where [?e :user/name "Roman"] ]
+      dbb))
+(def ent (d/entity  dbb (ffirst (find-user))))
